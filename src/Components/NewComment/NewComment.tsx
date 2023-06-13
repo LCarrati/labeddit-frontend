@@ -5,27 +5,31 @@ import { axiosPrivate } from "../../Api/axios";
 type Props = {
     objective: string;
     placeholder?: string;
-    onPostCreated: (newPost: any) => void;
+    onCommentCreated: (newComment: any) => void;
+    post_id: string;
   };
-const NewPost: React.FC<Props> = ({objective, placeholder, onPostCreated}) => {
+const NewComment: React.FC<Props> = ({objective, placeholder, onCommentCreated, post_id}) => {
 
     const [textFieldValue, setTextFieldValue] = useState('');
-    const handleNewPost = async () => {
+    const handleNewComment = async () => {
         try {
-            const response = await axiosPrivate.post('/posts/createpost', {
-                content: textFieldValue
+            const response = await axiosPrivate.post('/comment/addcomment', {
+                content: textFieldValue,
+                post_id: post_id
             })
             console.log(response.data)
-            const newPost = {
-                key: response.data.post_id,
+            const newComment = {
+                key: response.data.comment_id,
+                comment_id: response.data.comment_id,
                 post_id: response.data.post_id,
-                content: response.data.content,
+                comment: response.data.comment,
                 likes: 0,
                 dislikes: 0,
-                comments: 0,
                 nickname: response.data.nickname
+
+        
             }
-            onPostCreated(newPost);
+            onCommentCreated(newComment);
             setTextFieldValue('')
         } catch (error) {
             
@@ -36,11 +40,11 @@ const NewPost: React.FC<Props> = ({objective, placeholder, onPostCreated}) => {
     <Container>
         <TextField placeholder={placeholder || "Postar"} value={textFieldValue}
   onChange={(e) => setTextFieldValue(e.target.value)}/>
-        <NewPostButton onClick={handleNewPost}>{objective}</NewPostButton>
+        <NewPostButton onClick={handleNewComment}>{objective}</NewPostButton>
         <BottonLine />
     </Container>
 
   )
 }
 
-export default NewPost
+export default NewComment

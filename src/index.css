@@ -126,3 +126,10 @@ button:focus-visible {
   max-width: 363px;
   width: 90%;
 }
+
+.trashCan {
+  position: absolute;
+  right: 5px;
+  width: 30px;
+  cursor: pointer;
+}

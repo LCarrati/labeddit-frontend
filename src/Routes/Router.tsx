@@ -13,7 +13,7 @@ const Router = () => {
                 <Route path='login' element={<LoginPage/>} />
                 <Route path='signup' element={<SignupPage/>} />
                 <Route path='postdetail' element={<PostDetailPage/>} />
-                {/* <Route path='postdetail/:post_id' element={<PostDetailPage/>} /> */}
+                <Route path='postdetail/:post_id' element={<PostDetailPage/>} />
                 {/* <Route path='myprofile' element={<ProfilePage />} />
                 <Route path='user/:nickname' element={<UserDetailPage />} />
                 <Route path='*' element={<ErrorPage/>} /> */}

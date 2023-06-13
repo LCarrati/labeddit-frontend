@@ -20,7 +20,7 @@
 // export default GlobalContext;
 
 
-import { createContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useState, ReactNode } from 'react';
 
 interface AuthContextData {
   token: string | null;
@@ -50,22 +50,22 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
-  const [nickname, setNickname] = useState<string | null>(null);
+  const [nickname, setNickname] = useState<string | null>(localStorage.getItem("nickname") || null);
   const [role, setRole]= useState<string | null>(null);
 
-  useEffect(() => {
-    if (token === null) {
-      const cookie = document.cookie;
-      const cookieToken = cookie
-        .split('; ')
-        .find(row => row.startsWith('lctkn='))
-        ?.split('=')[1];
-  
-      setToken(cookieToken || null);
-    } else {
-      console.log('já tem um token')
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (token === null || nickname === null) {
+  //     const cookie = document.cookie;
+  //     const cookieToken = cookie
+  //       .split('; ')
+  //       .find(row => row.startsWith('lctkn='))
+  //       ?.split('=')[1];
+  //     console.log(cookieToken)
+  //     setToken(cookieToken || null);
+  //   } else {
+  //     console.log('já tem um token')
+  //   }
+  // }, []);
 
   return (
     <AuthContext.Provider value={{ token, nickname, role, setNickname, setRole, setToken }}>

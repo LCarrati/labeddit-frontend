@@ -4,6 +4,7 @@ import cancel from "../../assets/cancel.png"
 import { goToLogin, goToPostsList } from "../../Routes/coordinator";
 import useTokenFromCookie from "../Hooks/useTokenFromCookie";
 import { useNavigate } from "react-router-dom";
+import { axiosPrivate } from "../../Api/axios";
 
 type Props = {
     menu_text: string;
@@ -11,12 +12,12 @@ type Props = {
     cancelButtonFunction?: 'goToLogin' | 'goHome';
   };
   
-  const COOKIE_NAME = 'lctkn'
+  // const COOKIE_NAME = 'lctkn'
   
   const Header: React.FC<Props> = ({ menu_text, cancelButtonVisibility, cancelButtonFunction }) => {
       
     const navigate = useNavigate()
-    const { setToken } = useTokenFromCookie();
+    const { setToken, setNickname } = useTokenFromCookie();
     const handleCancelButton = () => {
         cancelButtonFunction === 'goToLogin' ? goToLogin(navigate) : goToPostsList(navigate);
     }
@@ -25,13 +26,16 @@ type Props = {
         menu_text === 'Entrar' ? goToLogin(navigate) : handleLogout();
     }
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         console.log('merda')
         // logic to navitage to the login page and remove the cookie from the browser
         // to remove the cookie from the browser:
         // 
         setToken('');
-        document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        localStorage.removeItem("nickname");
+        setNickname(null);
+        const response = await axiosPrivate.get('/users/logout');
+        console.log(response)
         goToLogin(navigate)
     }
 

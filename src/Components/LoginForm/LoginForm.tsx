@@ -33,6 +33,7 @@ const LoginForm = () => {
         console.log(response.data)
         setToken(response.data.token);
         setNickname(response.data.nickname);
+        localStorage.setItem("nickname", response.data.nickname);
         setRole(response.data.role);
         goToPostsList(navigate)
     } catch (error) {

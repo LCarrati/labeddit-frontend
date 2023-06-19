@@ -1,17 +1,18 @@
 import axios from "axios";
+import dotenv from 'dotenv'
 
-const BASE_URL = "http://localhost:3003"; //colocar no .env
+dotenv.config()
 
 // para requisições públicas
 export default axios.create({
-    baseURL: BASE_URL,
+    baseURL: process.env.BASE_URL,
     headers: { "Content-Type": "application/json" },
     withCredentials: true
   });
   
   // para requisições que precisam ser enviadas com Authorization no header
   export const axiosPrivate = axios.create({
-    baseURL: BASE_URL,
+    baseURL: process.env.BASE_URL,
     headers: { "Content-Type": "application/json" },
     withCredentials: true
   });

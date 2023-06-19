@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BottonLine, ButtonLogin, ButtonSignup, FormContainer, InputField } from "./styles";
 import { goToPostsList, goToSignUp } from "../../Routes/coordinator";
 import axios from "../../Api/axios";
@@ -12,6 +12,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { setNickname, setRole, setToken} = useTokenFromCookie();
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -36,17 +37,17 @@ const LoginForm = () => {
         localStorage.setItem("nickname", response.data.nickname);
         setRole(response.data.role);
         goToPostsList(navigate)
-    } catch (error) {
-      // console.log(error);
-    //   if (!error?.response) {
-    //     setErrorMsg("Sem resposta do servidor");
-    //     //se tiver erro.response e tambem o status for 409 (conflict)
-    // } else if (error.response?.status === 409) {
-    //     setErrorMsg("Nome de usuário não disponível");
-    // } else {
-    //     console.log(error);
-    //     setErrorMsg("Registro falhou, tente novamente");
-    // }
+    } catch (error: any) {
+      console.log(error);
+      if (!error?.response) {
+        setErrorMsg("Sem resposta do servidor");
+        //se tiver erro.response e tambem o status for 409 (conflict)
+    } else if (error.response?.status === 409) {
+        setErrorMsg("Nome de usuário não disponível");
+    } else {
+        console.log(error);
+        setErrorMsg("Registro falhou, tente novamente");
+    }
     }
   };
 
@@ -54,8 +55,15 @@ const LoginForm = () => {
     goToSignUp(navigate);
   };
 
+  useEffect(() => {
+    setErrorMsg("");
+  }, [email, password]);
+
   return (
     <FormContainer>
+      <p className={errorMsg ? "errmsg" : "offscreen"}>
+        {errorMsg}
+      </p>
       <InputField
         type="email"
         placeholder="E-mail"

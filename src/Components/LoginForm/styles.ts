@@ -36,7 +36,6 @@ export const InputField = styled.input`
     :focus {
         outline: none;
         border-image-source: linear-gradient(to right, #FF6489 0%, #F9B24E 100%);
-        /* border-image-source: linear-gradient(to right, rgb(249, 50, 252) 0%, rgb(188, 38, 191) 10%, rgb(125, 185, 232) 41%, rgb(133, 247, 143) 61%, rgb(239, 244, 132) 81%, rgb(255, 140, 142) 100%); */
         border-image-width: 2px;
         border-image-repeat: stretch;
         border-image-slice: 2;
@@ -77,7 +76,6 @@ export const ButtonLogin = styled.button`
 `;
 
 export const ButtonSignup = styled.button`
-    /* padding: 13px 133px; */
     max-width: 365px;
     width: 90%;
     height: 51px;
@@ -96,8 +94,6 @@ export const BottonLine = styled.div`
     max-width: 365px;
     width: 90%;
     height: 0px;
-    /* border: 1px linear-gradient(90deg, #FF6489 0%, #F9B24E 100%);
-     */
     border: 1px solid;
     border-image: linear-gradient(90deg, #FF6489 0%, #F9B24E 100%);
     border-image-slice: 1;

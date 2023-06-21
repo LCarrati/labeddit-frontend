@@ -4,7 +4,6 @@ import LoginPage from "../Pages/LoginPage/LoginPage"
 import SignupPage from "../Pages/SignupPage/SignupPage"
 import PostDetailPage from "../Pages/PostDetailPage/PostDetailPage"
 
-
 const Router = () => {
     return(
         <BrowserRouter>

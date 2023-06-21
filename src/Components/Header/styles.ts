@@ -6,8 +6,6 @@ type CancelButtonProps = {
 
 export const Container = styled.header`
     height: 50px;
-    /* left: 0px;
-    top: 44px; */
     background: #EDEDED;
     display: flex;
     width: 100%;

@@ -53,8 +53,6 @@ export const BottonLine = styled.div`
     max-width: 358px;
     width: 90%;
     height: 0px;
-    /* border: 1px linear-gradient(90deg, #FF6489 0%, #F9B24E 100%);
-     */
     border: 1px solid;
     border-image: linear-gradient(90deg, #FF6489 0%, #F9B24E 100%);
     border-image-slice: 1;

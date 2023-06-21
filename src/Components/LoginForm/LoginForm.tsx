@@ -4,16 +4,16 @@ import { goToPostsList, goToSignUp } from "../../Routes/coordinator";
 import axios from "../../Api/axios";
 import useTokenFromCookie from "../Hooks/useTokenFromCookie";
 import { useNavigate } from "react-router-dom";
-
-const LOGIN_URL = '/users/login'
+import { LOGIN_URL } from "../../env";
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-  const { setNickname, setRole, setToken} = useTokenFromCookie();
   const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
+  const { setNickname, setRole, setToken } = useTokenFromCookie();
+  
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -25,29 +25,28 @@ const LoginForm = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-          LOGIN_URL, 
-          JSON.stringify({
-            email,
-            password
-          })
-        )
-        console.log(response.data)
-        setToken(response.data.token);
-        setNickname(response.data.nickname);
-        localStorage.setItem("nickname", response.data.nickname);
-        setRole(response.data.role);
-        goToPostsList(navigate)
+        LOGIN_URL,
+        JSON.stringify({
+          email,
+          password
+        })
+      )
+      setToken(response.data.token);
+      setNickname(response.data.nickname);
+      localStorage.setItem("nickname", response.data.nickname);
+      setRole(response.data.role);
+      goToPostsList(navigate)
     } catch (error: any) {
       console.log(error);
       if (!error?.response) {
         setErrorMsg("Sem resposta do servidor");
-        //se tiver erro.response e tambem o status for 409 (conflict)
-    } else if (error.response?.status === 409) {
-        setErrorMsg("Nome de usuário não disponível");
-    } else {
+        //se tiver erro.response e tambem o status for 404 (não encontrado)
+      } else if (error.response?.status === 404) {
+        setErrorMsg("Usuário ou senha incorretos");
+      } else {
         console.log(error);
-        setErrorMsg("Registro falhou, tente novamente");
-    }
+        setErrorMsg("Login falhou, tente novamente");
+      }
     }
   };
 

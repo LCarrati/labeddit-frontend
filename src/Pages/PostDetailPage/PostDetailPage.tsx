@@ -1,140 +1,108 @@
 import { useEffect, useState } from "react"
 import { axiosPrivate } from "../../Api/axios"
 import Header from "../../Components/Header/header"
-import { goToLogin } from "../../Routes/coordinator"
+import { goToPostsList } from "../../Routes/coordinator"
 import { useNavigate, useParams } from "react-router-dom"
 import NewComment from "../../Components/NewComment/NewComment"
 import Comment from "../../Components/Comment/Comment"
 import Post from "../../Components/Post/post"
-
+import { IComment , CommentProps, PostProps } from "../../Interfaces/interfaces"
 
 const PostDetailPage = () => {
   const { post_id } = useParams();
   const [post, setPost] = useState<JSX.Element | null>(null);
+  const [commentsList, setCommentsList] = useState<IComment[]>([])
+  const navigate = useNavigate()
 
-    interface Comment {
-      comment_id: string;
-        post_id: string;
-        content: string;
-        likes: number;
-        dislikes: number;
-        comment: string;
-        nickname: string;
-      }
-    const [commentsList, setCommentsList] = useState<Comment[]>([])
-    const navigate = useNavigate()
-
-    const getComments = async () => {
-      try {
-        const response = await axiosPrivate.get(`/comment/getallcomments/${post_id}`, {withCredentials: true});
-        const comments = response.data
-        console.log(response.data)
-        setCommentsList(comments)        
-      } catch (error) {
-        goToLogin(navigate)
-      }
+  // buscar lista de comentários
+  const getComments = async () => {
+    try {
+      const response = await axiosPrivate.get(`/comment/getallcomments/${post_id}`, { withCredentials: true });
+      const comments = response.data
+      setCommentsList(comments)
+    } catch (error) {
+      console.log(error)
+      goToPostsList(navigate)
     }
+  }
 
-    interface CommentProps {
-      comment_id: string;
-        post_id: string;
-        content: string;
-        likes: number;
-        dislikes: number;
-        comment: string;
-        creator: string;
-        onDeleteComment: (deletedCommentID: string) => void;
-      }
+  // deletar comentário
+  const handleCommentDeleted = (deletedCommentID: string) => {
+    const newCommentsList = [...commentsList].filter((comment) => comment.comment_id !== deletedCommentID);
+    setCommentsList(newCommentsList);
+  };
 
-      const handleCommentDeleted = (deletedCommentID: string) => {
-        console.log(deletedCommentID)
-        const newCommentsList = [...commentsList].filter((comment) => comment.comment_id !== deletedCommentID);
-        console.log(newCommentsList)
-        setCommentsList(newCommentsList);
-      };
-
-    const commentsListJSX = [...commentsList].reverse().map((comment) => {
-        const commentProps: CommentProps = {
-            comment_id: comment.comment_id,
-            post_id: comment.post_id,
-            content: comment.content,
-            likes: comment.likes,
-            dislikes: comment.dislikes,
-            comment: comment.comment,
-            creator: comment.nickname,
-            onDeleteComment: handleCommentDeleted
-
-          };
-          return <Comment key={comment.comment_id} {...commentProps}/>;
-
-    })
-
-    const handleCommentCreated = (newComment: Comment) => {
-      console.log(newComment)
-        setCommentsList([...commentsList, newComment]);
-      };
-
-    useEffect(() => {
-        getComments()
-    },[])
-
-
-    interface PostProps {
-      post_id: string;
-      content: string;
-      likes: number;
-      dislikes: number;
-      comments: number;
-      creator: string;
-      onDeletePost: (deletedPostID: string) => void;
-    }
-
-    const handlePostDeleted = (deletedPostID: string) => {
-      console.log(deletedPostID)
+  // criar lista de comentários
+  const commentsListJSX = [...commentsList].reverse().map((comment) => {
+    const commentProps: CommentProps = {
+      comment_id: comment.comment_id,
+      post_id: comment.post_id,
+      content: comment.content,
+      likes: comment.likes,
+      dislikes: comment.dislikes,
+      comment: comment.comment,
+      creator: comment.nickname,
+      onDeleteComment: handleCommentDeleted
 
     };
-    // procurar o post pelo post_id, alimentar o objeto postProps com as informações, assim vou ter os dados.
+    return <Comment key={comment.comment_id} {...commentProps} />;
+  })
 
-    // axios request to get post by ID
-    const getPostById = async () => {
-      try {
-        const response = await axiosPrivate
+  // criar novo comentário
+  const handleCommentCreated = (newComment: IComment) => {
+    setCommentsList([...commentsList, newComment]);
+  };
+
+  // buscar comentários ao montar o componente
+  useEffect(() => {
+    getComments()
+  }, [])
+
+  // lógica para deletar o post estando na página do post
+  const handlePostDeleted = (deletedPostID: string) => {
+    console.log(deletedPostID)
+    // implementar lógica para deletar o post e retornar para página principal
+  };
+
+  // buscar post por id
+  const getPostById = async () => {
+    try {
+      const response = await axiosPrivate
         .get(`/posts/findpost/${post_id}`, {
           withCredentials: true
         });
-        console.log(response.data)
 
-        const postProps: PostProps = {
-          post_id: response.data.posts.post_id,
-          content: response.data.posts.content,
-          likes: response.data.posts.likes,
-          dislikes: response.data.posts.dislikes,
-          comments: response.data.posts.comments,
-          creator: response.data.posts.nickname,
-          onDeletePost: handlePostDeleted
-        };
-        const postComponent = <Post key={post_id} {...postProps}/>;
-        setPost(postComponent);
-
-      } catch (error) {
-        goToLogin(navigate)
-      }
+      const postProps: PostProps = {
+        post_id: response.data.posts.post_id,
+        content: response.data.posts.content,
+        likes: response.data.posts.likes,
+        dislikes: response.data.posts.dislikes,
+        comments: response.data.posts.comments,
+        creator: response.data.posts.nickname,
+        onDeletePost: handlePostDeleted
+      };
+      const postComponent = <Post key={post_id} {...postProps} />;
+      setPost(postComponent);
+    } catch (error) {
+      console.log(error)
+      goToPostsList(navigate)
     }
-    useEffect(() => {
-      getPostById();
-    }, [commentsList]);
+  }
 
+  // atualiza a contagem de comentários ao criar/deletar comentário
+  useEffect(() => {
+    getPostById();
+  }, [commentsList]);
 
+  // Verificar se post_id é undefined antes de usá-lo
+  const postIdProp = post_id ? post_id : "";
 
-//
-// Verificar se post_id é undefined antes de usá-lo
-const postIdProp = post_id ? post_id : "";
   return (
     <>
-    <Header menu_text="Logout" cancelButtonVisibility="visible"/>
-    {post}
-    <NewComment objective="Responder" placeholder="Escreva sua resposta..." onCommentCreated={handleCommentCreated} post_id={postIdProp}/>
-        {commentsListJSX}
+      <Header menu_text="Logout" cancelButtonVisibility="visible" />
+      {post}
+      <NewComment objective="Responder" placeholder="Escreva sua resposta..." onCommentCreated={handleCommentCreated} post_id={postIdProp} />
+      {commentsListJSX}
     </>
   )
 }

@@ -15,7 +15,6 @@ export const Container = styled.div`
     border: 1px solid #E0E0E0;
     border-radius: 12px;
     position: relative;
-    /* margin-bottom: 10px; */
     margin: 0 auto 10px;
 `
 
@@ -56,7 +55,6 @@ export const Votes = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 4.66667px;
-    /* gap: 15.92px; */
     border: 0.796748px solid #ECECEC;
     border-radius: 28px;
     width: 98px;
@@ -85,7 +83,6 @@ export const CommentCount = styled.div`
     justify-content: space-around;
     align-items: center;
     padding: 4.66667px;
-    /* gap: 8px; */
     border: 0.793333px solid #ECECEC;
     border-radius: 28px;
     width: 65px;

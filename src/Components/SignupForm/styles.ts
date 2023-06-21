@@ -57,6 +57,11 @@ export const InputField = styled.input`
         font-size: 16px;
         opacity: 0.8;
     }
+
+    ::-ms-reveal,
+    ::-ms-clear {
+        display: none!important;
+    }
 `;
 
 export const ButtonLogin = styled.button`

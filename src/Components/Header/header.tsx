@@ -27,7 +27,6 @@ type Props = {
     }
 
     const handleLogout = async () => {
-        console.log('merda')
         // logic to navitage to the login page and remove the cookie from the browser
         // to remove the cookie from the browser:
         // 

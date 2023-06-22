@@ -6,6 +6,7 @@ import Post from "../../Components/Post/post"
 import { goToLogin } from "../../Routes/coordinator"
 import { useNavigate } from "react-router-dom"
 import { IPost, PostProps } from "../../Interfaces/interfaces"
+import { POSTS_LIST_URL } from "../../env"
 
 
 const PostsListPage = () => {
@@ -16,7 +17,7 @@ const PostsListPage = () => {
   // buscar lista de posts
   const getPosts = async () => {
     try {
-      const response = await axiosPrivate.get('/posts/postslist', { withCredentials: true });
+      const response = await axiosPrivate.get(POSTS_LIST_URL);
       const posts = response.data.posts
       setPostsList(posts)
     } catch (error) {

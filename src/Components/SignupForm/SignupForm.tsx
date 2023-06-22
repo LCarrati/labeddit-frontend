@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ButtonLogin, CheckboxContainer, CheckboxInput, CheckboxLabel, FormContainer, InputField } from "./styles";
-import axios from "../../Api/axios";
+import { axiosPublic } from "../../Api/axios";
 import { useNavigate } from "react-router-dom";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -103,7 +103,7 @@ const SignupForm = () => {
     } // fim do código de proteção do botão
 
     try {
-      await axios.post(
+      await axiosPublic.post(
         REGISTER_URL,
         JSON.stringify({
           nickname: nickname,

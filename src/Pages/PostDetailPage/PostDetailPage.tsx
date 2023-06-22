@@ -17,7 +17,7 @@ const PostDetailPage = () => {
   // buscar lista de comentários
   const getComments = async () => {
     try {
-      const response = await axiosPrivate.get(`/comment/getallcomments/${post_id}`, { withCredentials: true });
+      const response = await axiosPrivate.get(`/comment/getallcomments/${post_id}`);
       const comments = response.data
       setCommentsList(comments)
     } catch (error) {
@@ -67,10 +67,7 @@ const PostDetailPage = () => {
   // buscar post por id
   const getPostById = async () => {
     try {
-      const response = await axiosPrivate
-        .get(`/posts/findpost/${post_id}`, {
-          withCredentials: true
-        });
+      const response = await axiosPrivate.get(`/posts/findpost/${post_id}`);
 
       const postProps: PostProps = {
         post_id: response.data.posts.post_id,

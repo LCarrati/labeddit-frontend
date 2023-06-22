@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BottonLine, ButtonLogin, ButtonSignup, FormContainer, InputField } from "./styles";
 import { goToPostsList, goToSignUp } from "../../Routes/coordinator";
-import axios from "../../Api/axios";
+import axios, { axiosPrivate } from "../../Api/axios";
 import useTokenFromCookie from "../Hooks/useTokenFromCookie";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_URL } from "../../env";
@@ -24,7 +24,7 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
+      const response = await axiosPrivate.post(
         LOGIN_URL,
         JSON.stringify({
           email,

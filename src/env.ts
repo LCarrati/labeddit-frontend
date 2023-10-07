@@ -1,4 +1,5 @@
-export const BASE_URL = 'https://vps72.heliohost.us/labeddit-backend/'
+// export const BASE_URL = 'https://vps72.heliohost.us/labeddit-backend/'
+export const BASE_URL = 'https://ec2.leonardo-carrati.dev.br/labdit/'
 
 // validar input de usuário:
 // 1) ^ significa início, primeiro caractere deve ser uma letra minúscula ou maiúscula
